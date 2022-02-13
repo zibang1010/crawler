@@ -15,6 +15,7 @@ import time
 import socket
 import os
 
+
 db = RedisClient(
     host=REDIS_TEST_HOST,
     port=REDIS_PORT,
