@@ -8,6 +8,14 @@ import requests
 import time
 from retrying import retry
 from loguru import logger
+from db import RedisClient
+from settings import *
+
+db = RedisClient(
+    host=REDIS_TEST_HOST,
+    port=REDIS_PORT,
+    password=REDIS_PASSWORD,
+    db=REDIS_DB)
 
 
 def get_zm_proxy():
@@ -39,11 +47,16 @@ def get_kdl_proxy():
         print(resq.status_code)
 
 
+def get_proxy():
+    proxy = db.spop(REDIS_PROXY_KEY)
+    return proxy
+
+
 @retry
 def test_proxy():
     # proxy_server = get_zm_proxy()
-    proxy_server = get_kdl_proxy()
-    # logger.debug(f"Get proxy_server：{proxy_server}")
+    proxy_server = get_proxy()
+    logger.debug(f"Get proxy_server：{proxy_server}")
     proxy_ip = proxy_server.get('ip')
     proxy_port = proxy_server.get('port')
     params = {
@@ -87,4 +100,4 @@ def on_proxy():
 
 
 if __name__ == '__main__':
-    on_proxy()
+   on_proxy()

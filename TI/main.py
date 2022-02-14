@@ -140,7 +140,6 @@ class addToCart:
                 data = response.json()
                 self.on_success(data)
 
-
     def on_handler(self):
         count = 0
         for num in range(1, 100):
@@ -248,7 +247,6 @@ class addToCart:
             if local_server:
                 time.sleep(5)
                 self.on_launch(local_server)
-
                 logger.debug(f'Run Time: {self.runTime}s')
             else:
                 pass

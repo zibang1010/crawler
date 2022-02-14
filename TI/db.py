@@ -20,6 +20,9 @@ class RedisClient(object):
         self.db = redis.StrictRedis(host=host, port=port, password=password, db=db,
                                     decode_responses=True)
 
+    def spop(self, name):
+        return json.loads(self.db.spop(name))
+
     def radd(self, name, value):
         """rpush 末尾添加"""
         return self.db.rpush(name, value)

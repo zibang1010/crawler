@@ -1,25 +1,39 @@
+# -*- coding: utf-8 -*-
+
+# @File  : settings.py
+# @Author: zibang
+# @Time  : 2月 10,2022
+# @Desc  : proxy_pool
 # !/usr/bin/env python
 # -*- encoding: utf-8 -*-
-
-
+import json
 import time
 import random
 import threading
+
 import requests
+from db import RedisClient
+from settings import *
 
 
 class ProxyPool():
-
     def __init__(self, orderid, proxy_count):
-        self.order_id = orderid
-        self.proxy_count = proxy_count if proxy_count < 50 else 50  # 池子维护的IP总数，建议一般不要超过50
+        self.orderid = orderid
+        self.proxy_count = proxy_count if proxy_count < 5 else 5
         self.alive_proxy_list = []  # 活跃IP列表
+        self.db = RedisClient(
+            host=REDIS_TEST_HOST,
+            port=REDIS_PORT,
+            password=REDIS_PASSWORD,
+            db=REDIS_DB)
 
     def _fetch_proxy_list(self, count):
         """调用快代理API获取代理IP列表"""
         try:
-            res = requests.get("http://dps.kdlapi.com/api/getdps/?orderid=%s&num=%s&pt=1&sep=1&f_et=1&format=json" % (
-            self.order_id, count))
+            # res = requests.get("http://dps.kdlapi.com/api/getdps/?orderid=%s&num=%s&pt=1&sep=1&f_et=1&format=json" % (
+            res = requests.get(
+                'http://dps.kdlapi.com/api/getdps/?orderid=%s&num=%s&signature=bfveudiqg9036cie2tzt9pt62gocv6pz&pt=1&f_loc=1&f_et=1&format=json&sep=1' %
+                (self.orderid, count))
             return [proxy.split(',') for proxy in res.json().get('data').get('proxy_list')]
         except:
             print("API获取IP异常，请检查订单")
@@ -42,12 +56,25 @@ class ProxyPool():
         self._init_proxy()
         while True:
             for proxy in self.alive_proxy_list:
-                proxy[1] = float(proxy[1]) - sleep_seconds  # proxy[1]代表此IP的剩余可用时间
-                if proxy[1] <= 3:
+                proxy[2] = float(proxy[2]) - sleep_seconds  # proxy[1]代表此IP的剩余可用时间
+                if proxy[2] <= 3:
                     self.alive_proxy_list.remove(proxy)  # IP还剩3s时丢弃此IP
             if len(self.alive_proxy_list) < self.proxy_count:
                 self.add_alive_proxy(self.proxy_count - len(self.alive_proxy_list))
             time.sleep(sleep_seconds)
+            print(self.alive_proxy_list)
+            for proxy_list in self.alive_proxy_list:
+                ip, port = str(proxy_list[0]).split(':')
+                address = proxy_list[1]
+                expire = proxy_list[2]
+                item = {
+                    'ip': ip,
+                    'port': port,
+                    'address': address,
+                }
+                self.db.sadd(REDIS_PROXY_KEY, json.dumps(item, ensure_ascii=False))
+                # print('expire: %s' % expire)
+                # print(item)
 
     def start(self):
         """开启子线程更新IP池"""
@@ -56,35 +83,10 @@ class ProxyPool():
         t.start()
 
 
-def parse_url(proxy):
-    # 用户名密码认证(私密代理/独享代理)
-    username = "username"
-    password = "password"
-    proxies = {
-        "http": "http://%(user)s:%(pwd)s@%(proxy)s/" % {"user": username, "pwd": password, "proxy": proxy},
-        "https": "http://%(user)s:%(pwd)s@%(proxy)s/" % {"user": username, "pwd": password, "proxy": proxy}
-    }
-
-    # 白名单方式（需提前设置白名单）
-    # proxies = {
-    #     "http": "http://%(proxy)s/" % {"proxy": proxy_ip},
-    #     "https": "http://%(proxy)s/" % {"proxy": proxy_ip}
-    # }
-
-    # 要访问的目标网页
-    target_url = "https://dev.kdlapi.com/testproxy"
-    # 使用代理IP发送请求
-    response = requests.get(target_url, proxies=proxies)
-    # 获取页面内容
-    if response.status_code == 200:
-        print(response.text)
-
-
 if __name__ == '__main__':
-    proxy_pool = ProxyPool('9266892014xxxxx', 30)  # 订单号, 池子中维护的IP数
+    proxy_pool = ProxyPool('954480323287312', 15)  # 订单号, 池子中维护的IP数
     proxy_pool.start()
     time.sleep(1)  # 等待IP池初始化
 
-    proxy = proxy_pool.get_proxy()  # 从IP池中提取IP
-    if proxy:
-        parse_url(proxy)
+    while True:
+        time.sleep(1)

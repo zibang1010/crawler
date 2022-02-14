@@ -20,3 +20,6 @@ REDIS_SUCCESS_KEY = 'ti_task:product_success'
 REDIS_LOG_KEY = 'log:zibang'
 REDIS_CHANNEL = 'task2'
 REDIS_DB = 2
+
+REDIS_PROXY_KEY = 'ti_task:proxy'
+
