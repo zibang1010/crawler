@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "fingerprint-generator": "^1.0.0",
+    "fingerprint-injector": "^1.0.0"
+  }
+}

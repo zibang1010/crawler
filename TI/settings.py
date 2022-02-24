@@ -17,8 +17,21 @@ REDIS_PROFILE_KEY = 'ti_task:profile'
 REDIS_RESULT_KEY = 'ti_task:result'
 REDIS_ERROR_KEY = 'ti_task:product_error'
 REDIS_SUCCESS_KEY = 'ti_task:product_success'
-REDIS_LOG_KEY = 'log:zibang'
+REDIS_LOG_KEY = 'zibang:log'
 REDIS_CHANNEL = 'task2'
 REDIS_DB = 2
 
 REDIS_PROXY_KEY = 'ti_task:proxy'
+
+"""proxy"""
+PROXY_COUNT = 35
+PROXY_EX = 40
+
+"""order"""
+ORDER_ID = '954480323287312'
+
+"""kdl"""
+KDL_URL = 'http://dps.kdlapi.com/api/getdps/?orderid=954480323287312&num=1&signature=bfveudiqg9036cie2tzt9pt62gocv6pz&pt=1&f_loc=1&f_et=1&f_carrier=1&dedup=1&format=json&sep=1'
+
+"""product url"""
+PRODUCT_URL = 'https://www.ti.com/store/ti/zh/p/product/?p=LMK1D1208IRHAR'
