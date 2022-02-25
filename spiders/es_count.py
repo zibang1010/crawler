@@ -4,19 +4,19 @@
 # @Author: zibang
 # @Time  : 2月 24,2022
 # @Desc  :  统计es 状态码 -->  redis queue log
-
+import json
 import time
 from loguru import logger
 from settings import *
-from db.update_task import RedisClient
+from redis import StrictRedis
 from elasticsearch import Elasticsearch
 import datetime
 
 
 class ESCount:
     def __init__(self):
-        self.db = RedisClient(
-            host=REDIS_HOST,
+        self.db = StrictRedis(
+            host="r-wz94l16plax2n2kusdpd.redis.rds.aliyuncs.com",
             port=REDIS_PORT,
             password=REDIS_PASSWORD,
             db=0)
@@ -60,13 +60,14 @@ class ESCount:
         for info in buckets:
             log[info.get('key')] = info.get('doc_count')
         log['cts'] = cts
-        self.db.push_es_log(log)
+        self.db.set('lyt:ti_log', json.dumps(log, ensure_ascii=False))
+        print(log)
 
     def start(self):
         while 1:
             try:
                 self.push()
-                time.sleep(60)
+                time.sleep(60 * 5)
             except Exception as err:
                 logger.error(err)
 
