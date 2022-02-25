@@ -45,7 +45,7 @@ class Profile(object):
         :return:
         """
         item = {
-            profile: 100,
+            profile: 10,
         }
         return self.db.zadd(REDIS_PROFILE_KEY, item)
 
@@ -85,21 +85,19 @@ class Profile(object):
 
 
 if __name__ == '__main__':
-    while 1:
-        p = Profile()
-        """add"""
-        result = p.get_profile()
-        print(result)
-        data_list = result.get('data')
-        for data in data_list:
-            sid = data.get('sid')
-            print(sid)
-            print(p.add_profile(sid))
-        """random"""
-        # print(p.random_profile())
+    p = Profile()
+    """add"""
+    result = p.get_profile()
+    print(result)
+    data_list = result.get('data')
+    for data in data_list:
+        sid = data.get('sid')
+        print(sid)
+        print(p.add_profile(sid))
+    """random"""
+    # print(p.random_profile())
 
-        """count"""
-        print(p.count_profile())
-        time.sleep(60 * 5)
+    """count"""
+    print(p.count_profile())
 
     # print(p.decrease_profile('B7B8544C-6382-433A-A03C-54829D1FEFDE'))

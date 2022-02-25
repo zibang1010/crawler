@@ -6,7 +6,7 @@
 # @Desc  :
 import json
 
-from browser_ua import random_ua
+from profile.browser_ua import random_ua
 from random import choice
 import random
 import time
@@ -16,19 +16,27 @@ import requests
 
 
 def create_profile():
+    """
+    随机创建指纹
+    :return:
+    """
     body = create_config()
     data = {
         "token": VM_TOKEN,
-        "Body": json.dumps(body,ensure_ascii=False)
+        "Body": json.dumps(body, ensure_ascii=False)
     }
 
     url = f'{VM_URL}/profile/create'
     result = requests.post(url, data=data)
     print(result.text)
-    return result.json()
+    return result.json().get('value')
 
 
 def create_config():
+    """
+    随机创建配置
+    :return:
+    """
     platform = 'windows'
     browser = 'chrome'
     data = random_ua(platform, browser)
@@ -37,6 +45,8 @@ def create_config():
     ua = data.get('ua')
     vendor = data.get('vendor')
     screenWidth, screenHeight = screen.split('x')
+    screenWidth = 1920
+    screenHeight = 1080
     hardwareConcurrency = [8, 16, 12, 4, 32]  # 1~64
     deviceMemory = [8]
     fontList = [

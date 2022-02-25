@@ -15,7 +15,6 @@ import requests
 1、获取分数低 profile 0 >= profile <= 60
 2、删除redis queue
 3、删除server
-
 """
 db = StrictRedis(
     host=REDIS_TEST_HOST,
@@ -45,7 +44,7 @@ def remove(profile):
 
 
 if __name__ == '__main__':
-    profile_list = db.zrangebyscore(REDIS_PROFILE_KEY, -10, 60)
+    profile_list = db.zrangebyscore(REDIS_PROFILE_KEY, -10, 100)
     print(len(profile_list))
     for num, profile in enumerate(profile_list):
         print('--' * 20)

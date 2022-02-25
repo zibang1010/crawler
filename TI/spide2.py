@@ -1,11 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# @File  : crawl.py
-# @Author: zibang
-# @Time  : 2月 24,2022
-# @Desc  :
-# -*- coding: utf-8 -*-
-
 # @File  : spider.py
 # @Author: zibang
 # @Time  : 2月 13,2022

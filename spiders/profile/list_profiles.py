@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# @File  : list_profile.py
+# @File  : list_profiles.py
 # @Author: zibang
 # @Time  : 2月 24,2022
 # @Desc  :

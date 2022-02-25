@@ -51,9 +51,13 @@ def on_start(profile, proxy):
     if not proxy:
         api_url = f"http://localhost:35000/api/v1/profile/start?automation=true&profileId={profile}"
     else:
+        """
+        "proxyusername": PROXY_USERNAME,
+        "proxypassword": PROXY_PASSWORD,
+        """
         ip = proxy.get('ip')
         port = proxy.get('port')
-        proxy_params = f'&proxytype=http&proxyserver={ip}&proxyport={port}'
+        proxy_params = f'&proxytype=http&proxyserver={ip}&proxyport={port}&proxyusername=1139989998&proxypassword=ntusyuox'
         api_url = f"http://localhost:35000/api/v1/profile/start?automation=true&profileId={profile}{proxy_params}"
 
     resp = requests.get(api_url, timeout=30)

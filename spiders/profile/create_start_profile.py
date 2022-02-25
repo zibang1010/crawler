@@ -59,7 +59,7 @@ def create_start():
     encode = base64.b64encode(json.dumps(data).encode())
     print(encode)
     url = f'{VM_LOCAL_URL}/profile/create_start'
-    response = requests.post(url, data=encode, headers=headers)
+    response = requests.post(url, data={'body': encode}, headers=headers)
     print(response.text)
 
 

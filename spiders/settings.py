@@ -49,4 +49,10 @@ ES_HOST = env.str("ES_HOST", 'http://127.0.0.1:9200/')
 """VMLogin"""
 VM_URL = env.str("VM_URL", 'https://api.vmlogin.com/v1')
 VM_TOKEN = env.str("VM_TOKEN", '068ff736efe8c0b21bb6ece6980d68ae')
-VM_LOCAL_URL = env.str("VM_LOCAL_URL", 'http://192.168.1.126:35000/api/v1')
+VM_LOCAL_URL = env.str("VM_LOCAL_URL", 'http://localhost:35000/api/v1')
+
+"""Proxy"""
+PROXY_USERNAME = '1139989998'
+PROXY_PASSWORD = 'ntusyuox'
+PROXY_POOL_COUNT = 4
+PROXY_ORDER_ID = '954480323287312'
