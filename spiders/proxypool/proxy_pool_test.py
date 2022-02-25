@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# @File  : proxy_pool.py
+# @File  : proxy_pool_test.py
 # @Author: zibang
 # @Time  : 2月 24,2022
 # @Desc
@@ -24,7 +24,7 @@ class ProxyPool():
         self.proxy_count = PROXY_POOL_COUNT  # 池子维护的IP总数，建议一般不要超过50
         self.alive_proxy_list = []  # 活跃IP列表
         self.db = StrictRedis(
-            host=REDIS_TEST_HOST,
+            host=REDIS_HOST,
             port=REDIS_PORT,
             password=REDIS_PASSWORD,
             db=6)
@@ -77,6 +77,9 @@ class ProxyPool():
                     # 移除redis queue proxy
                     self.db.lrem(REDIS_PROXY_KEY, 1, json.dumps(proxy, ensure_ascii=False))
                     logger.warning(f"Remove Proxy: {proxy}")
+            # 代理队列长度小于代理池总数
+            if self.db.llen(REDIS_TASK_KEY) < self.proxy_count:
+                self.add_alive_proxy(self.proxy_count - len(self.alive_proxy_list))
             if len(self.alive_proxy_list) < self.proxy_count:
                 self.add_alive_proxy(self.proxy_count - len(self.alive_proxy_list))
             time.sleep(sleep_seconds)

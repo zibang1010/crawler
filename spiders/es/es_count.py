@@ -8,7 +8,7 @@
 import time
 from loguru import logger
 from settings import *
-from db.redis import RedisClient
+from db.update_task import RedisClient
 from elasticsearch import Elasticsearch
 import datetime
 

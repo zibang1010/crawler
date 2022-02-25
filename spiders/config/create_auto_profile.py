@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
-# @File  : create_profile.py
+# @File  : create_auto_profile.py
 # @Author: zibang
 # @Time  : 2月 24,2022
 # @Desc  :
 import json
 
-from profile.browser_ua import random_ua
+from config.browser_ua import random_ua
 from random import choice
 import random
 import time

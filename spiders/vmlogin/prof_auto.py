@@ -4,8 +4,8 @@
 # @Author: zibang
 # @Time  : 2月 24,2022
 # @Desc
-from profile.create_profile import create_profile
-from profile.share_profiles import share
+from config.create_auto_profile import create_profile
+from config.share_profiles import share
 from redis import StrictRedis
 from settings import *
 

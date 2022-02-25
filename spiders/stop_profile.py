@@ -8,7 +8,7 @@ from settings import VM_LOCAL_URL
 import requests
 
 
-def stop(profile):
+def on_stop(profile):
     params = {
         "profileId": profile,
         "force": True
@@ -19,5 +19,5 @@ def stop(profile):
 
 
 if __name__ == '__main__':
-    profile = '03210349-4EE1-4F37-867C-54636E0BD71A'
-    stop(profile)
+    profile = 'local_C4C792E6D3654B45845995C679A88773'
+    on_stop(profile)

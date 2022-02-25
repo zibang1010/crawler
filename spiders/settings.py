@@ -18,15 +18,16 @@ from environs import Env
 env = Env()
 
 """redis"""
-REDIS_HOST = env.str("REDIS_HOST", 'r-wz94l16plax2n2kusdpd.redis.rds.aliyuncs.com')
-REDIS_TEST_HOST = env.str("REDIS_TEST_HOST", 'r-wz95j265dca7ahyov7pd.redis.rds.aliyuncs.com')
+REDIS_HOST = env.str("REDIS_HOST", 'r-wz95j265dca7ahyov7pd.redis.rds.aliyuncs.com')  # 测试
+# REDIS_HOST = env.str("REDIS_HOST", 'r-wz94l16plax2n2kusdpd.redis.rds.aliyuncs.com')
+# REDIS_TEST_HOST = env.str("REDIS_TEST_HOST", 'r-wz95j265dca7ahyov7pd.redis.rds.aliyuncs.com')
 REDIS_PORT = env.int("REDIS_PORT", 6379)
 REDIS_PASSWORD = env.str("REDIS_PASSWORD", 'lyt:GWZZPEQbvTKU1yZn2ZY7')
-REDIS_TASK_KEY = 'ti_task:task'
-REDIS_PROFILE_KEY = 'ti_task:profile'
-REDIS_UA_KEY = 'ti_task:ua'
-REDIS_COUNT_LOG_KEY = 'lyt:ti_log'
-REDIS_PROXY_KEY = 'ti_task:proxy'
+REDIS_TASK_KEY = 'zibang:task'
+REDIS_PROFILE_KEY = 'zibang:profiles'
+REDIS_UA_KEY = 'zibang:ua'
+REDIS_COUNT_LOG_KEY = 'zibang:ti_log'
+REDIS_PROXY_KEY = 'zibang:proxy'
 REDIS_CHANNEL = 'task2'
 REDIS_DB = 6
 
@@ -48,11 +49,12 @@ ES_HOST = env.str("ES_HOST", 'http://127.0.0.1:9200/')
 
 """VMLogin"""
 VM_URL = env.str("VM_URL", 'https://api.vmlogin.com/v1')
-VM_TOKEN = env.str("VM_TOKEN", '068ff736efe8c0b21bb6ece6980d68ae')
+# VM_TOKEN = env.str("VM_TOKEN", '068ff736efe8c0b21bb6ece6980d68ae')
+VM_TOKEN = env.str("VM_TOKEN", '155cbad18be7ab4173d1c9335881db81')
 VM_LOCAL_URL = env.str("VM_LOCAL_URL", 'http://localhost:35000/api/v1')
 
 """Proxy"""
 PROXY_USERNAME = '1139989998'
 PROXY_PASSWORD = 'ntusyuox'
-PROXY_POOL_COUNT = 4
+PROXY_POOL_COUNT = 3
 PROXY_ORDER_ID = '954480323287312'

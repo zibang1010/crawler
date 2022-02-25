@@ -4,12 +4,17 @@
 # @Author: zibang
 # @Time  : 2月 24,2022
 # @Desc  :
+import time
+
 from settings import VM_LOCAL_URL, PROXY_USERNAME, PROXY_PASSWORD
 import requests
-from proxypool.random import get_proxy
+from proxypool.random_proxy import get_proxy
+from config.random_profile import get_profile
 
 
-def start_profile(profile, proxy):
+def start_profile():
+    profile = get_profile()
+    proxy = get_proxy()
     ip = proxy.get('ip')
     port = proxy.get('port')
     params = {
@@ -25,18 +30,19 @@ def start_profile(profile, proxy):
     url = f'{VM_LOCAL_URL}/profile/start'
     result = requests.get(url, params=params)
     status = result.json().get('status')
-    print(result.json())
+    data = result.json()
+    print(data)
+
     if status == 'ERROR':
-        pass
+        return None
     else:
-        pass
-
-
-def run():
-    proxy = get_proxy()
-    profile = '03210349-4EE1-4F37-867C-54636E0BD71A'
-    start_profile(profile, proxy)
+        item = {
+            'host': data.get('value'),
+            'profileId': profile,
+            'proxy': proxy
+        }
+        return item
 
 
 if __name__ == '__main__':
-    pass
+    start_profile()
