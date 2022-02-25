@@ -81,14 +81,15 @@ class RedisClient(object):
         """
             降低分数，如果分数==0 删除
         """
-        # self.db.zincrby(REDIS_PROFILE_KEY, -10, profile)
-        # score = self.db.zscore(REDIS_PROFILE_KEY, profile)
+        self.db.zincrby(REDIS_PROFILE_KEY, -10, profile)
+        score = self.db.zscore(REDIS_PROFILE_KEY, profile)
         # if score <= 0:
-        if self.db.zrem(REDIS_PROFILE_KEY, profile):
-            logger.warning(f"Remove redis：{profile}")
-            if remove(profile):
-                logger.warning(f"Delete profile：{profile}")
-                pass
+        #     if self.db.zrem(REDIS_PROFILE_KEY, profile):
+        #         logger.warning(f"Decrease score：{score}, {profile}")
+                # requests delete
+                # if remove(profile):
+                #     # logger.warning(f"Delete profile：{profile}")
+                #     pass
 
     def random_profile(self):
         """
@@ -168,8 +169,11 @@ if __name__ == '__main__':
         password=REDIS_PASSWORD,
         db=0)
 
-    result = db.range('ti_task:lyt', 0, 25)
-    print(type(result))
+    task_list = db2.range('ti_task:lyt', 0, 500)
+    for task in task_list:
+        print(task)
+        print(eval(task))
+        db.
     # print(len(set(info)))
 
     # set_list = {}
