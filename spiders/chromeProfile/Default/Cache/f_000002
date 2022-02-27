@@ -1,0 +1,565 @@
+if(!String.prototype.trim) {
+	String.prototype.trim = function () {
+		return this.replace(/^\s+|\s+$/g,'');
+	};
+}
+
+(function(){
+    var $mod_panel = DOMUtil.getElementsByClassName('mod-search')[0];
+    var $search = DOMUtil.getElementsByClassName('search', $mod_panel)[0];
+    var $button = DOMUtil.getElementsByClassName('input-button',$mod_panel);
+    var $text = DOMUtil.getElementsByClassName('input-text', $mod_panel)[0];
+    var $clear = document.createElement('a');
+    $clear.setAttribute('href','javascript:;');
+    $clear.style.display = 'none';
+    $clear.className = 'clear';
+    $clear.innerHTML = '<span>X</span>';
+    $search.appendChild($clear);
+
+    var clearText = function(){
+        var value = $text.value;
+        if(value){
+            $clear.style.display = 'block';
+        }else{
+            $clear.style.display = 'none';
+        }
+    };
+    var testinput = document.createElement('input');
+    if('oninput' in testinput){
+        $text.addEventListener("input",clearText,false);
+    }else{
+        $text.onpropertychange = clearText;
+    }
+    $clear.onclick = function(){
+        $text.value = '';
+        $clear.style.display = 'none';
+        $text.focus();
+    };
+    clearText();
+})();
+
+(function(){
+	var reg = {
+		mobile:/^1[3|4|5|6|7|8|9][0-9]{5,9}$/,
+		zip:/^\d{4,6}$/,
+		zone:/^0\d{2,6}$/,
+		id:/^\d{15}$|^\d{18}$|^\d{17}[xX]$/,
+		domain:/^([a-zA-Z0-9][-a-zA-Z0-9]{0,62}\.)+([a-zA-Z]{2,63})\.?$/
+	};
+var check = {
+	'mobile':function(){
+		var value = this.mobile.value.trim();
+		if(!value.length){
+			alert('手机号不能为空！');
+			this.mobile.focus();
+			return false;
+		}else if(!value.match(reg['mobile'])){
+			alert('不是完整的11位手机号或者正确的手机号前七位！');
+			this.mobile.focus();
+			return false;
+		}
+	},
+	'ip':function(){
+		var value = this.ip.value.trim();
+		value = value.replace(/^http(s)?:\/\//,'').replace(/\/$/,'');
+		if(!value.length){
+			alert('地址不能为空！');
+			this.ip.focus();
+			return false;
+		}else if(value.match(/[A-Za-z_-]/)){
+			if(!value.match(reg['domain'])){
+				alert('域名格式错误！');
+				this.ip.focus();
+				return false;
+			}
+		}else{
+			var arr = value.split(".");
+			if(arr.length!=4){
+				alert("不是正确的IP");
+				this.ip.focus();
+				return false;
+			}else{
+				for(var i=0;i<4;i++){
+					if(isNaN(arr[i]) || arr[i].length<0 || arr[i]>255){
+						alert("不是正确的IP");
+						this.ip.focus();
+						return false;
+					}
+				}
+			}
+		}
+		this.ip.value = value;
+	},
+	'zip':function(){
+		var value = this.zip.value.trim();
+		if(!value.match(reg['zip'])){
+			alert('请输入邮政编码前4-6位！');
+			this.zip.focus();
+			return false;
+		}
+	},
+	'zone':function(){
+		var value = this.zone.value.trim();
+		if(!value.match(reg['zone'])){
+			alert('请输入以“0”开头的3-7位区号！');
+			this.zone.focus();
+			return false;
+		}
+	},
+	'area':function(){
+		var value = this.area.value.trim();
+		if(!value.length){
+			alert('请输入地址！');
+			this.area.focus();
+			return false;
+			}else if(value.length<2){
+			alert('地址至少要有2个字！');
+			this.area.focus();
+			return false;
+		}
+	},
+	'id':function(){
+		var value = this.userid.value.trim();
+		if(!value.match(reg['id'])){
+			alert('请输入15位或18位身份证号！');
+			this.userid.focus();
+			return false;
+		}
+	}
+};
+
+document.ipform.onsubmit = check['ip'];
+document.area2zipForm.onsubmit = check['area'];
+document.zipform.onsubmit = check['zip'];
+document.area2zoneForm.onsubmit = check['area'];
+document.zoneform.onsubmit = check['zone'];
+document.getElementById('luck').onclick = function (){
+var value = document.mobileform.mobile.value.trim();
+if(value!=''){
+this.href='https://jx.ip138.com/search.asp?k='+value;
+}
+}
+document.mobileform.onsubmit = check['mobile'];
+document.IDform.onsubmit = check['id'];
+})();
+(function($text){
+    var findDomain = function(){
+        var value = $text.value.trim().replace(/[\r\n]/g, "");
+        var temp = value;
+        var match = value.match(/((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}/);
+        if(match){
+            value = match[0];
+        }
+        match = value.match(/([a-zA-Z0-9][-a-zA-Z0-9]{0,62}\.)+([a-zA-Z0-9\-]{1,63})\.?/);
+        if(match){
+            value = match[0];
+        }
+        value = value.replace(/[^a-zA-Z0-9\-\.]/g, "");
+        if(value!=temp){
+            $text.value = value;
+        }
+    };
+    var testinput = document.createElement('input');
+    if('onpaste' in testinput&&navigator.userAgent.indexOf('Mac OS')>-1){
+        $text.addEventListener("paste",function(){
+            setTimeout(function(){
+                findDomain();
+            },0);
+        },false);
+    }else if('oninput' in testinput){
+        $text.addEventListener("input",findDomain,false);
+    }else{
+        $text.onpropertychange = findDomain;
+    }
+})(document.getElementById('ip'));
+
+(function($text){
+    var findDomain = function(){
+    	var value = $text.value;
+        var temp = value.trim().replace(/[\r\n\s]/g, "").replace(/-/g, "");
+        if(value!=temp){
+            $text.value = temp;
+        }
+    };
+    var testinput = document.createElement('input');
+    if('onpaste' in testinput&&navigator.userAgent.indexOf('Mac OS')>-1){
+        $text.addEventListener("paste",function(){
+            setTimeout(function(){
+                findDomain();
+            },0);
+        },false);
+    }else if('oninput' in testinput){
+        $text.addEventListener("input",findDomain,false);
+    }else{
+        $text.onpropertychange = findDomain;
+    }
+})(document.getElementById('mobile'));
+(function(){
+	$form = document.icpform;
+	var reg = {
+		domain:/^([a-zA-Z0-9][-a-zA-Z0-9]{0,62}\.)+([a-zA-Z]{1,63})\.?$/,
+		icp:/^(京|粤|闽|吉|琼|桂|浙|鲁|宁|黑|滇|晋|鄂|陕|甘|渝|冀|苏|皖|蜀|豫|青|沪|藏|蒙|赣|新|辽|湘|黔|津)((\D{1,5})|(.{1,5}\-))?\d{6,8}(号|证)?(\-\d+)?(?!\d)$/
+	};
+	var findDomain = function(){
+		var temp = $form.icp.value;
+		var value = temp.trim().replace(/[\r\n\s]/g, "");
+		match = value.match(/(京|粤|闽|吉|琼|桂|浙|鲁|宁|黑|滇|晋|鄂|陕|甘|渝|冀|苏|皖|蜀|豫|青|沪|藏|蒙|赣|新|辽|湘|黔|津)((\D{1,5})|(.{1,5}\-))?\d{6,8}(号|证)?(\-\d+)?(?!\d)/);
+		if(match){
+			value = match[0];
+		}
+		match = value.match(/([a-zA-Z0-9][-a-zA-Z0-9]{0,62}\.)+([a-zA-Z0-9\-]{1,63})\.?/g);
+		if(match){
+			value = match[0];
+		}
+		if(value!=temp){
+			$form.icp.value = value;
+		}
+	};
+	var testinput = document.createElement('input');
+	if('onpaste' in testinput){
+		$form.icp.onpaste = function(){	    		
+			setTimeout(function(){
+				findDomain();
+			},0);
+		};
+	}
+	var checkInput = function(){
+		var value = $form.icp.value.trim();
+		if (value == '') {
+			alert('请输入您要查询的网站域名！');
+			return false;
+		}else if(!(value.match(reg['domain'])||value.match(reg['icp']))){
+			alert('网站域名或备案号格式错误！');
+			return false;
+		} else {
+			if(value.match(reg['domain'])){
+				value = value.toLowerCase();
+			}else if(value.match(reg['icp'])){
+				value = value.toUpperCase();
+			}
+			window.open('https://icplishi.com/' + value + '/');
+		}
+		return false;
+	};
+	$form.onsubmit = checkInput;
+})();
+(function(){
+	var $form = document.pangzhanform;
+	var reg = {
+		ip:/^((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}(\/24)?$/,
+		domain:/^([a-zA-Z0-9][-a-zA-Z0-9]{0,62}\.)+([a-zA-Z]{1,63})\.?$/
+	};
+	var findDomain = function(){
+		var temp = $form.ip.value;
+		var value = temp.trim().replace(/[\r\n\s]/g, "");
+		var match = value.match(/((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}(\/24)?/);
+		if(match){
+			value = match[0];
+		}
+		match = value.match(/([a-zA-Z0-9][a-zA-Z0-9\-]{0,62}\.)+([a-zA-Z0-9\-\/]{1,63})\.?/);
+		if(match){
+			value = match[0];
+		}
+		value = value.replace(/[^a-zA-Z0-9\-\.\/]/g, "");
+		if(value!=temp){
+			$form.ip.value = value;
+		}
+	};
+	var testinput = document.createElement('input');
+	if('onpaste' in testinput){
+		$form.ip.onpaste = function(){	    		
+			setTimeout(function(){
+				findDomain();
+			},0);
+		};
+	}
+	var checkInput = function(){
+		var value = $form.ip.value.trim();
+		if (value == '') {
+			alert('请输入您要查询的iP地址！');
+			return false;
+		}else if(!value.match(reg['ip'])){
+			alert('iP格式错误！');
+			return false;
+		} else {
+			window.open('https://chapangzhan.com/' + value.replace(/.\d{1,3}(\/24)?$/,'.0/24'));
+		}
+		return false;
+	};
+	$form.onsubmit = checkInput;
+})();
+(function(){
+	var $form = document.ziyuform;
+	var reg = {
+		ip:/^((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}(\/24)?$/,
+		domain:/^([a-zA-Z0-9][-a-zA-Z0-9]{0,62}\.)+([a-zA-Z]{1,63})\.?$/
+	};
+	var findDomain = function(){
+		var temp = $form.domain.value;
+		var value = temp.trim().replace(/[\r\n\s]/g, "");
+		var match = value.match(/((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}/);
+		if(match){
+			value = match[0];
+		}
+		match = value.match(/([a-zA-Z0-9][-a-zA-Z0-9]{0,62}\.)+([a-zA-Z0-9\-]{1,63})\.?/);
+		if(match){
+			value = match[0];
+		}
+		value = value.replace(/[^a-zA-Z0-9\-\.]/g, "");
+		if(value!=temp){
+			$form.domain.value = value;
+		}
+	};
+	var testinput = document.createElement('input');
+	if('onpaste' in testinput){
+		$form.domain.onpaste = function(){	    		
+			setTimeout(function(){
+				findDomain();
+			},0);
+		};
+	}
+	var checkInput = function(){
+		var value = $form.domain.value.trim();
+		if (value == '') {
+			alert('请输入您要查询的网站域名！');
+			return false;
+		}else if(!value.match(reg['domain'])){
+			alert('域名格式错误！');
+			return false;
+		} else {
+			window.open('https://chaziyu.com/' + value+'/');
+		}
+		return false;
+	};
+	$form.onsubmit = checkInput;
+})();
+(function(){
+	var $form = document.youlianform;
+	var reg = {
+		ip:/^((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}(\/24)?$/,
+		domain:/^([a-zA-Z0-9][-a-zA-Z0-9]{0,62}\.)+([a-zA-Z]{1,63})\.?$/
+	};
+	var findDomain = function(){
+		var temp = $form.domain.value;
+		var value = temp.trim().replace(/[\r\n\s]/g, "");
+		var match = value.match(/((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)(\.((25[0-5])|(2[0-4]\d)|(1\d\d)|([1-9]\d)|\d)){3}/);
+		if(match){
+			value = match[0];
+		}
+		match = value.match(/([a-zA-Z0-9][-a-zA-Z0-9]{0,62}\.)+([a-zA-Z0-9\-]{1,63})\.?/);
+		if(match){
+			value = match[0];
+		}
+		value = value.replace(/[^a-zA-Z0-9\-\.]/g, "");
+		if(value!=temp){
+			$form.domain.value = value;
+		}
+	};
+	var testinput = document.createElement('input');
+	if('onpaste' in testinput){
+		$form.domain.onpaste = function(){	    		
+			setTimeout(function(){
+				findDomain();
+			},0);
+		};
+	}
+	var checkInput = function(){
+		var value = $form.domain.value.trim();
+		if (value == '') {
+			alert('请输入您要查询的网站域名！');
+			return false;
+		}else if(!value.match(reg['domain'])){
+			alert('域名格式错误！');
+			return false;
+		} else {
+			window.open('https://chayoulian.com/?url=' + value);
+		}
+		return false;
+	};
+	$form.onsubmit = checkInput;
+})();
+
+(function(){
+	function ajax(params){
+		params = params||{};
+		if (!params.url) {
+	        throw new Error('Necessary parameters are missing.'); //必要参数未填
+	    }
+	    var random = +new Date;
+	    var hander = null;
+		var options = {
+			url: '',								//接口地址
+			type: 'GET',							//请求方式
+			timeout: 5000,							//超时等待时间
+			cache: true,							//缓存 
+			async: true,							//是否异步
+			headers: {},							//
+			xhrFields: {},							//设置XHR对象属性键值对。如果需要，可设置withCredentials为true的跨域请求。
+			dataType: 'json',						//请求的数据类型
+			data: {},								//参数
+			jsonp: 'callback',						//传递请求完成后的函数名
+			jsonpCallback: 'jsonp_' + random,		//请求完成后的函数名
+			error: function() {},					//请求失败后调用
+			success: function(){},					//请求成功后调用
+			complete: function(){}					//请求完成后调用
+		};
+		var formatParams = function(json) {
+	        var arr = [];
+	        for(var i in json) {
+	            arr.push(encodeURIComponent(i) + '=' + encodeURIComponent(json[i]));
+	        }
+	        return arr.join("&");
+	    };
+	    for(var i in params){
+	    	switch(i){
+	    		case 'type':
+	    			options[i] = params[i].toUpperCase();
+	    			break;
+	    		case 'dataType':
+	    			options[i] = params[i].toLowerCase();
+	    			break;
+	    		default:
+	    			options[i] = params[i];
+	    	}
+	    }
+	    var params = '';
+	    if(typeof options.data =='object'){
+	        params = formatParams(options.data);
+	    }
+		if(options.dataType=='jsonp'||options.dataType=='script'){
+			options.cache = params.cache||false;
+			//插入动态脚本及回调函数
+			var $head = document.getElementsByTagName('head')[0];
+			var $script = document.createElement('script');
+			$head.appendChild($script);
+			if(options.dataType=='jsonp'){
+		        window[options.jsonpCallback] = function (json) {
+		            $head.removeChild($script);
+		            window[options.jsonpCallback] = null;
+		            hander && clearTimeout(hander);
+		            options.success(json);
+		            options.complete();
+		        };
+			}else{
+				$script.onload = function(){
+					hander && clearTimeout(hander);
+		            options.success();
+		            options.complete();
+				};
+			}
+	        //发送请求
+	        if(options.cache){
+		    	params += (params?'&':'')+('_'+random);
+		    }
+	        if(options.dataType=='jsonp'){
+	        	params += (params?'&':'')+(options.jsonp+'='+options.jsonpCallback);
+	        }
+	        if(params){
+	        	options.url += (options.url.indexOf('?')>-1?'&':'?')+params;
+	        }
+	        $script.src = options.url;
+	        //超时处理
+	       	hander = setTimeout(function(){
+	            $head.removeChild($script);
+	            if(window[options.jsonpCallback]){
+	            	window[options.jsonpCallback] = null;
+	            }
+	            options.error();
+	            options.complete();
+	        }, options.timeout);
+		}else{
+			//创建xhr对象
+			var xhr = new (self.XMLHttpRequest||ActiveXObject)("Microsoft.XMLHTTP");
+			if(!xhr){
+				return false;
+			}
+			//发送请求
+			if (options.type == 'POST') {
+				xhr.open(options.type, options.url, options.async);
+				xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+			}else{
+				if(options.cache){
+			    	params += (params?'&':'')+('_'+random);
+			    }
+				if(params){
+	            	options.url += (options.url.indexOf('?')>-1?'&':'?')+params;
+		        }
+				xhr.open(options.type, options.url, options.async);
+				params = '';
+			}
+			for(var name in options.headers){
+				xhr.setRequestHeader(name,options.headers[name]);
+			}
+			if(options.xhrFields){
+				for(var field in options.xhrFields){
+					xhr[field]= options.xhrFields[field];
+				}
+			}
+			xhr.send(params);
+			//超时处理
+			var requestDone = false;
+			hander = setTimeout(function() {
+				requestDone = true;
+				if(xhr.readyState != 4){
+					xhr.abort();
+					options.error();
+				}
+				options.complete();
+			}, options.timeout);
+			//状态处理
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState == 4&&!requestDone) {
+					if(xhr.status>=200 && xhr.status<300||xhr.status == 304) {
+						var data = options.dataType == "xml" ? xhr.responseXML : xhr.responseText;
+						if (options.dataType == "json") {
+							try{
+								data =  JSON.parse(data);
+							}catch(e){
+								data = eval('(' + data + ')');
+							}
+						}
+						options.success(data);
+					} else {
+						options.error();
+					}
+					hander && clearTimeout(hander);
+					options.complete();
+				}
+			};
+		}
+	}
+	if(DOMUtil.getElementsByClassName('mod-news').length){
+		var $mod_news = DOMUtil.getElementsByClassName('mod-news')[0];
+		var num = 0;
+		var getData = function(){
+			ajax({
+				'url':'https://www.ip138.com/mp/list/new/',
+				'method':'get',
+				'dataType':'jsonp',
+				'jsonpCallback':'jsonpCallback',
+				'success':function(json){
+					var html = [];
+					if(json.status){
+						for(var i=0;i<json.data.results.length;i++){
+							var item = json.data.results[i];
+							html.push('<li><a href="'+item['url']+'" target="_blank">'+item['name']+'</a></li>');
+						}
+					}
+					var $bd = DOMUtil.getElementsByClassName('bd', $mod_news)[0];
+					$bd.innerHTML = '<ul>'+html.join('')+'</ul>';
+				},
+				'fail':function(){
+					if(num<3){
+						num++;
+						setTimeout(function(){
+							getData();
+						},500);
+					}else{
+						$mod_news.style.display = 'none';
+					}
+				}
+			});
+		};
+		getData();
+	}
+})();

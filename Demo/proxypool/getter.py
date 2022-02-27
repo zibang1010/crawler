@@ -8,8 +8,7 @@ import json
 import time
 import hashlib
 from storages import RedisClient
-import threading
-from kdl import KdlCrawler
+from proxypool.kdl import KdlCrawler
 from TI.settings import PROXY_COUNT, PROXY_EX
 from loguru import logger
 

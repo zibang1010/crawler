@@ -15,13 +15,13 @@ from config.list_profiles import list_all
 
 """
 db = StrictRedis(
-    host=REDIS_HOST,
+    host='r-wz94l16plax2n2kusdpd.redis.rds.aliyuncs.com',
     port=REDIS_PORT,
     password=REDIS_PASSWORD,
-    db=5)
+    db=6)
 
 
-def delete(num, profile):
+def delete(profile):
     """
     移除profile
     :return: {'status': 'OK', 'value': 191432}
@@ -33,11 +33,12 @@ def delete(num, profile):
     url = 'https://api.vmlogin.com/v1/profile/remove'
     result = requests.get(url, params)
     data = result.json()
-    print("Delete: ", num + 1, data)
+    print('Remove Profile %s' % profile)
 
 
 def clear():
     result = db.delete(REDIS_PROFILE_KEY)
+    result = db.delete(REDIS_PROFILE_SCORE_KEY)
     # result = db.delete("ti_task:profile")
     print("redis: ", result)
 
@@ -46,6 +47,6 @@ if __name__ == '__main__':
     clear()
     profile_list = list_all()
     for num, profile in enumerate(profile_list):
-        delete(num, profile)
+        delete(profile)
 
     clear()

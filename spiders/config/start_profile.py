@@ -10,11 +10,18 @@ from settings import VM_LOCAL_URL, PROXY_USERNAME, PROXY_PASSWORD
 import requests
 from proxypool.random_proxy import get_proxy
 from config.random_profile import get_profile
+from loguru import logger
 
 
 def start_profile():
     profile = get_profile()
     proxy = get_proxy()
+    if not profile:
+        logger.warning('No profile...')
+        return
+    if not proxy:
+        logger.warning('No proxy...')
+        return
     ip = proxy.get('ip')
     port = proxy.get('port')
     params = {
@@ -29,10 +36,8 @@ def start_profile():
     }
     url = f'{VM_LOCAL_URL}/profile/start'
     result = requests.get(url, params=params)
-    status = result.json().get('status')
     data = result.json()
-    print(data)
-
+    status = data.get('status')
     if status == 'ERROR':
         return None
     else:
@@ -45,4 +50,4 @@ def start_profile():
 
 
 if __name__ == '__main__':
-    start_profile()
+    print(start_profile())

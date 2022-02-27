@@ -10,8 +10,13 @@ from settings import *
 import requests
 from loguru import logger
 
+"""
+清空redis  Queue
+获取在线所有的profiles
+推送Redis Queue
+"""
 db = StrictRedis(
-    host=REDIS_HOST,
+    host='r-wz94l16plax2n2kusdpd.redis.rds.aliyuncs.com',
     port=REDIS_PORT,
     password=REDIS_PASSWORD,
     db=6)
@@ -47,22 +52,23 @@ def create():
         logger.debug('Clear Queue Profile...')
     for profile in list_all():
         if db.lpush(REDIS_PROFILE_KEY, profile):
-            logger.debug('Add Profile: %s' % profile)
+            if db.zadd(REDIS_PROFILE_SCORE_KEY, {profile: 0}):
+                logger.debug('Add Profile: %s' % profile)
 
 
-def get_profiles():
-    """
-       获取配置文件
-       :return:
-   """
-    result = db.rpoplpush(REDIS_PROFILE_KEY, REDIS_PROFILE_KEY)
-    print(result)
-    # return eval(result)
-
-
-def run():
-    profile_list = list_all()
-    print(profile_list)
+# def get_profiles():
+#     """
+#        获取配置文件
+#        :return:
+#    """
+#     result = db.rpoplpush(REDIS_PROFILE_KEY, REDIS_PROFILE_KEY)
+#     print(result)
+#     # return eval(result)
+#
+#
+# def run():
+#     profile_list = list_all()
+#     print(profile_list)
 
 
 if __name__ == '__main__':

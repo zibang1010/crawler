@@ -6,19 +6,22 @@
 # @Desc
 from redis import StrictRedis
 from settings import *
-
+from loguru import logger
 db = StrictRedis(
-    host=REDIS_HOST,
+    host="r-wz94l16plax2n2kusdpd.redis.rds.aliyuncs.com",
     port=REDIS_PORT,
     password=REDIS_PASSWORD,
-    db=4)
+    db=7)
 
 
 def get_proxy():
-    key = db.randomkey()
-    value = db.get(str(key, encoding='utf-8'))
-    return eval(value)
-
+    try:
+        key = db.randomkey()
+        value = db.get(str(key, encoding='utf-8'))
+        return eval(value)
+    except Exception as err:
+        logger.error(err)
+        return None
 
 # def get_proxy():
 #     """

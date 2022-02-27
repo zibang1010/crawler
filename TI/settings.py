@@ -34,4 +34,5 @@ ORDER_ID = '954480323287312'
 KDL_URL = 'http://dps.kdlapi.com/api/getdps/?orderid=954480323287312&num=1&signature=bfveudiqg9036cie2tzt9pt62gocv6pz&pt=1&f_loc=1&f_et=1&f_carrier=1&dedup=1&format=json&sep=1'
 
 """product url"""
-PRODUCT_URL = 'https://www.ti.com/store/ti/zh/p/product/?p=LMK1D1208IRHAR'
+PRODUCT_URL = 'https://www.ti.com.cn/store/ti/zh/p/product/?p=TIOL1123DRCR'
+# PRODUCT_URL = 'https://www.ti.com.cn/product/cn/DLP3020-Q1?jktype=homepageproduct#order-quality'

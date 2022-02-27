@@ -154,32 +154,3 @@ class RedisClient(object):
     def rpop_lpush(self, src, dst):
         """删除尾部->添加头部"""
         return self.db.rpoplpush(src, dst)
-
-
-if __name__ == '__main__':
-    db = RedisClient(
-        host=REDIS_TEST_HOST,
-        port=REDIS_PORT,
-        password=REDIS_PASSWORD,
-        db=5)
-
-    db2 = RedisClient(
-        host=REDIS_HOST,
-        port=REDIS_PORT,
-        password=REDIS_PASSWORD,
-        db=0)
-
-    task_list = db2.range('ti_task:lyt', 0, 500)
-    for task in task_list:
-        print(task)
-        print(eval(task))
-        db.
-    # print(len(set(info)))
-
-    # set_list = {}
-    # for info in result:
-    #     print(info)
-        # db.radd('ti_task:lyt', info)
-
-
-    # print(db.delete_proxy("ff09cb0e07bd90188746006623284c50"))

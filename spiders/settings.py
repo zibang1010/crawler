@@ -18,18 +18,21 @@ from environs import Env
 env = Env()
 
 """redis"""
-REDIS_HOST = env.str("REDIS_HOST", 'r-wz95j265dca7ahyov7pd.redis.rds.aliyuncs.com')  # 测试
-# REDIS_HOST = env.str("REDIS_HOST", 'r-wz94l16plax2n2kusdpd.redis.rds.aliyuncs.com')
+# REDIS_HOST = env.str("REDIS_HOST", 'r-wz95j265dca7ahyov7pd.redis.rds.aliyuncs.com')  # 测试
+REDIS_HOST = env.str("REDIS_HOST", 'r-wz94l16plax2n2kusdpd.redis.rds.aliyuncs.com')
 # REDIS_TEST_HOST = env.str("REDIS_TEST_HOST", 'r-wz95j265dca7ahyov7pd.redis.rds.aliyuncs.com')
 REDIS_PORT = env.int("REDIS_PORT", 6379)
 REDIS_PASSWORD = env.str("REDIS_PASSWORD", 'lyt:GWZZPEQbvTKU1yZn2ZY7')
-REDIS_TASK_KEY = 'zibang:task'
-REDIS_PROFILE_KEY = 'zibang:profiles'
-REDIS_UA_KEY = 'zibang:ua'
-REDIS_COUNT_LOG_KEY = 'zibang:ti_log'
-REDIS_PROXY_KEY = 'zibang:proxy'
-REDIS_CHANNEL = 'task2'
+REDIS_TASK_KEY = 'ti_task:lyt'  # TODO 固定KEY
+REDIS_PROFILE_KEY = 'lyt:profiles'
+REDIS_UA_KEY = 'lyt:ua'
+REDIS_LOG_KEY = 'lyt:log'
+REDIS_CHANNEL = 'lyt'
+REDIS_PRODUCT_KEY = 'lyt:product'
 REDIS_DB = 6
+"""score"""
+REDIS_PROFILE_SCORE_KEY = 'score:profiles'
+REDIS_PROXY_SCORE_KEY = 'score:profiles'
 
 """proxy"""
 PROXY_COUNT = 35
@@ -42,15 +45,15 @@ ORDER_ID = '954480323287312'
 KDL_URL = 'http://dps.kdlapi.com/api/getdps/?orderid=954480323287312&num=1&signature=bfveudiqg9036cie2tzt9pt62gocv6pz&pt=1&f_loc=1&f_et=1&f_carrier=1&dedup=1&format=json&sep=1'
 
 """product url"""
-PRODUCT_URL = 'https://www.ti.com/store/ti/zh/p/product/?p=LMK1D1208IRHAR'
+PRODUCT_URL = 'https://www.ti.com.cn/store/ti/zh/p/product/?p=TIOL1123DRCR'
 
 """ES_HOST"""
 ES_HOST = env.str("ES_HOST", 'http://127.0.0.1:9200/')
 
 """VMLogin"""
 VM_URL = env.str("VM_URL", 'https://api.vmlogin.com/v1')
-# VM_TOKEN = env.str("VM_TOKEN", '068ff736efe8c0b21bb6ece6980d68ae')
-VM_TOKEN = env.str("VM_TOKEN", '155cbad18be7ab4173d1c9335881db81')
+VM_TOKEN = env.str("VM_TOKEN", '068ff736efe8c0b21bb6ece6980d68ae')
+# VM_TOKEN = env.str("VM_TOKEN", '155cbad18be7ab4173d1c9335881db81')
 VM_LOCAL_URL = env.str("VM_LOCAL_URL", 'http://localhost:35000/api/v1')
 
 """Proxy"""
