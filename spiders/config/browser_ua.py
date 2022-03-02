@@ -40,7 +40,6 @@ if __name__ == '__main__':
         platform = 'windows'
         browser = 'chrome'
         data = random_ua(platform, browser)
-        del data['screen']
-        db.sadd(REDIS_UA_KEY, json.dumps(data,ensure_ascii=False))
+        db.sadd(REDIS_UA_KEY, json.dumps(data, ensure_ascii=False))
         print(data)
         # time.sleep(1)

@@ -9,7 +9,8 @@ import datetime
 import time
 
 if __name__ == '__main__':
-    while True:
-        print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
-        os.system('taskkill /f /t /im chrome.exe')
-        time.sleep(60 * 60 * 1)
+    # while True:
+    #     print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()))
+    #     os.system('taskkill /f /t /im chrome.exe')
+    #     time.sleep(60 * 60 * 1)
+    os.system('taskkill /f /t /im chrome.exe')

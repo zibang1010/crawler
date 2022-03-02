@@ -207,8 +207,8 @@ class Cart(object):
                         if count_403 == 2:
                             if not count_200:
                                 # 暂时不移除
-                                # result = self.db.lrem(REDIS_PROFILE_KEY, 1, self.profileId)
-                                # delete(self.profileId)
+                                result = self.db.lrem(REDIS_PROFILE_KEY, 1, self.profileId)
+                                delete(self.profileId)
                                 pass
                             return
                     if self.status_code == '404':
@@ -245,6 +245,7 @@ class Cart(object):
                         page.on('response', self.on_response)
                         part = str(self.db.srandmember(REDIS_PRODUCT_KEY), encoding='utf-8')
                         page.goto(f"https://www.ti.com.cn/store/ti/zh/p/product/?p={part}", timeout=30 * 1000)  # 防止代理超时
+                        # page.goto(f"https://www.baidu.com")
                         page.wait_for_timeout(5 * 1000)
                         self.execute_js(page)
                         page.wait_for_timeout(random.randint(2, 5) * 1000)

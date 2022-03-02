@@ -4,13 +4,13 @@
 # @Author: zibang
 # @Time  : 2月 25,2022
 # @Desc  :
-
+import time
 from pprint import pprint
 from redis import StrictRedis
 from settings import *
 import requests
 from loguru import logger
-from save_profile import save
+from config.save_profile import save
 
 db = StrictRedis(
     host=REDIS_HOST,
@@ -29,7 +29,6 @@ def get_profile():
     result = db.zrangebyscore(REDIS_PROFILE_SCORE_KEY, 4, 100)
     for profile in result:
         profile_list.append(str(profile, encoding='utf-8'))
-
     print("profile_list: ", len(profile_list))
     return profile_list
 
@@ -49,9 +48,16 @@ def detail(profile):
 
 
 if __name__ == '__main__':
-    # profile = '0CBCFEBF-07F1-4340-9CE4-86CCE441A9DB'
+    # profile = 'AE50B8B7-AF6F-4FF0-9111-784D072E5588'
     # pprint(detail(profile))
-    profile_list = get_profile()
-    for profile in profile_list:
-        data = detail(profile)
-        save(profile, data)
+    # save(profile, detail(profile))
+    while 1:
+        try:
+            profile_list = get_profile()
+            for profile in profile_list:
+                data = detail(profile)
+                save(profile, data)
+            print('--' * 40)
+            time.sleep(8 * 60)
+        except Exception as err:
+            pass

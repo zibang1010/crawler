@@ -26,6 +26,10 @@ class KdlCrawler(object):
         return None
 
     def parse(self, response) -> dict:
+        """
+        :param response:
+        :return:
+        """
         try:
             data = response.get('data')
             proxy_list = data.get('proxy_list')[0]

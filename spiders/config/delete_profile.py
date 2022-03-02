@@ -10,6 +10,7 @@ from settings import *
 from redis import StrictRedis
 import requests
 from config.list_profiles import list_all
+from config.detail_profile import save
 
 """
 
@@ -43,10 +44,13 @@ def clear():
     print("redis: ", result)
 
 
-if __name__ == '__main__':
+def start():
     clear()
     profile_list = list_all()
     for num, profile in enumerate(profile_list):
         delete(profile)
-
     clear()
+
+
+if __name__ == '__main__':
+    start()
