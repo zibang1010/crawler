@@ -272,6 +272,7 @@ def share(profile):
         'jxgl002@163.com',
         'jxgl003@163.com',
         'jxgl004@163.com',
+        'jxgl005@163.com',
     ]
     for account in account_list:
         params = {
@@ -283,6 +284,7 @@ def share(profile):
         result = requests.get(url, params=params)
         data = result.json()
         value = data.get('value')
+        print(value)
         status = data.get('status')
         if value == 218:
             logger.warning(f"{account}, {status}")
