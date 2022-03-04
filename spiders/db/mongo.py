@@ -22,6 +22,13 @@ def insert_history(data):
     except Exception as err:
         logger.error(err)
 
+def insert_count_log(data):
+    try:
+        conllection = zb_db['count_log']
+        conllection.insert_one(data)
+    except Exception as err:
+        logger.error(err)
+
 
 def insert_log(data):
     try:

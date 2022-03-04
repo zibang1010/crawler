@@ -214,14 +214,13 @@ class Cart(object):
                     if self.status_code == '404':
                         # self.remove_proxy()
                         return
-                time.sleep(random.randint(6, 10))
+                time.sleep(random.randint(2, 5))
             else:
                 logger.error(f'No Task: {data}')
 
     def run(self):
         try:
             local_server = start_profile()
-
             if local_server:
                 self.profileId = local_server.get('profileId')
                 host = local_server.get('host')
@@ -249,7 +248,6 @@ class Cart(object):
                         page.wait_for_timeout(5 * 1000)
                         self.execute_js(page)
                         page.wait_for_timeout(random.randint(2, 5) * 1000)
-
         except Exception as err:
             logger.error(err)
             if 'connect ECONNREFUSED' in str(err) or 'Timeout' in str(err):

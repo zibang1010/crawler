@@ -36,13 +36,13 @@ REDIS_PROXY_SCORE_KEY = 'score:profiles'
 
 """proxy"""
 PROXY_COUNT = 50
-PROXY_EX = 10
+PROXY_EX = 60
 
 """order"""
 ORDER_ID = '954480323287312'
 
 """kdl"""
-KDL_URL = 'http://dps.kdlapi.com/api/getdps/?orderid=954480323287312&num=1&signature=bfveudiqg9036cie2tzt9pt62gocv6pz&pt=1&f_loc=1&f_et=1&f_carrier=1&dedup=1&format=json&sep=1'
+KDL_URL = 'http://dps.kdlapi.com/api/getdps/?orderid=954480323287312&num=5&signature=bfveudiqg9036cie2tzt9pt62gocv6pz&pt=1&f_loc=1&f_et=1&f_carrier=1&dedup=1&format=json&sep=1'
 # KDL_URL = 'http://dps.kdlapi.com/api/getdps/?orderid=953607630812075&num=1&signature=k8laig8majr78y4s8usi0idzspvgvh7m&pt=1&f_loc=1&f_et=1&f_carrier=1&dedup=1&format=json&sep=1'
 
 """product url"""
