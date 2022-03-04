@@ -273,6 +273,11 @@ def share(profile):
         'jxgl003@163.com',
         'jxgl004@163.com',
         'jxgl005@163.com',
+        'jxgl006@163.com',
+        'jxgl007@163.com',
+        'jxgl008@163.com',
+        'jxgl009@163.com',
+        'jxgl010@163.com',
     ]
     for account in account_list:
         params = {
@@ -284,7 +289,6 @@ def share(profile):
         result = requests.get(url, params=params)
         data = result.json()
         value = data.get('value')
-        print(value)
         status = data.get('status')
         if value == 218:
             logger.warning(f"{account}, {status}")
@@ -309,7 +313,7 @@ def start():
         try:
             logger.debug('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
             count = queue_count()
-            if count < 450:
+            if count < 2000:
                 logger.debug('Queue Count %s' % count)
                 profile = create_profile()
                 logger.debug('Profile: %s' % profile)
