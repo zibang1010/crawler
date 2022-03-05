@@ -313,7 +313,7 @@ def start():
         try:
             logger.debug('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
             count = queue_count()
-            if count < 2000:
+            if count < 2999:
                 logger.debug('Queue Count %s' % count)
                 profile = create_profile()
                 logger.debug('Profile: %s' % profile)

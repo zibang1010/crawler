@@ -48,16 +48,16 @@ def detail(profile):
 
 
 if __name__ == '__main__':
-    # profile = 'AE50B8B7-AF6F-4FF0-9111-784D072E5588'
-    # pprint(detail(profile))
-    # save(profile, detail(profile))
-    while 1:
-        try:
-            profile_list = get_profile()
-            for profile in profile_list:
-                data = detail(profile)
-                save(profile, data)
-            print('--' * 40)
-            time.sleep(8 * 60)
-        except Exception as err:
-            pass
+    profile = '00013343-218D-4B8D-AF26-CA5075684FAC'
+    pprint(detail(profile))
+    save(profile, detail(profile))
+    # while 1:
+    #     try:
+    #         profile_list = get_profile()
+    #         for profile in profile_list:
+    #             data = detail(profile)
+    #             save(profile, data)
+    #         print('--' * 40)
+    #         time.sleep(8 * 60)
+    #     except Exception as err:
+    #         pass

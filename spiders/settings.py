@@ -27,7 +27,7 @@ REDIS_TASK_KEY = 'ti_task:lyt'  # TODO 固定KEY
 REDIS_PROFILE_KEY = 'lyt:profiles'
 REDIS_UA_KEY = 'lyt:ua'
 REDIS_LOG_KEY = 'lyt:log'
-REDIS_CHANNEL = 'lyt'
+REDIS_CHANNEL = 'task2'  # 固定 不能改
 REDIS_PRODUCT_KEY = 'lyt:product'
 REDIS_DB = 6
 """score"""
